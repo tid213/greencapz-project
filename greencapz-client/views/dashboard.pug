@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  div(class="dashboard")
+    div(id="dashboard_title")
+      h3 Last reading on: #{time_temp_1}
+    div(class="dashboard_items")
+      div(class="box glowing")
+        div(id="box_text")
+          p Room Temp:
+          h3 #{temperature_3}f
+      div(class="box glowing")
+        div(id="box_text")
+          p Tent Temp:
+          h3 #{temperature_2}f 
+      div(class="box glowing1")
+        div(id="box_text")
+          p Water pH:
+          h3 6.1ph
+      div(class="box glowing1")
+        div(id="box_text")
+          p Water Temp:
+          h3 #{temperature_1}f
+      div(class="box glowing")
+        div(id="box_text")
+          p Tent Humidity:
+          h3 50% 
+      div(class="box glowing1")
+        div(id="box_text")
+          p Water PPM:
+          h3 #{ppm}ppm
+     

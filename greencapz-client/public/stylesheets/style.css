@@ -1,0 +1,90 @@
+body {
+  padding: 5px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: black;
+  color: white;
+}
+
+a {
+  color: #00B7FF;
+}
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+}
+#dashboard_title{
+  text-align: center;
+}
+.dashboard_items{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+#dashboard_item{
+  width: 200px;
+  height: 200px;
+  border: white solid thin;
+}
+#box_text{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+#box_text p{
+  font-weight: bold;
+}
+.box {
+  position: relative;
+  height:  200px;
+  width: 190px;
+  display: block;
+  background: black;
+  border-radius: 50%;
+  text-align: center;
+  margin: 3px;
+}
+
+.glowing::before{
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #13ff13, #13ff13, black, #13ff13, black, #13ff13,  #13ff13,  black, black);
+  background-size: 400%;
+  width: calc(100% + 5px);
+  height: calc(100% + 5px);
+  z-index: -1;
+  animation: glower 30s linear infinite;
+}
+
+.glowing1::before{
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #13a9ff, #13a9ff, black, #13a9ff, black, #13a9ff,  #13a9ff,  black, black);
+  background-size: 400%;
+  width: calc(100% + 5px);
+  height: calc(100% + 5px);
+  z-index: -1;
+  animation: glower 30s linear infinite;
+}
+
+@keyframes glower {
+  0% {
+    background-position: 0 0;
+  }
+  
+  50% {
+    background-position: 500% 0;
+  }
+  
+  100% {
+    background-position: 0 0;
+  }
+}
