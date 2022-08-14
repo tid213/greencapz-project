@@ -1,0 +1,74 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <EEPROM.h>
+#include "GravityTDS.h"
+
+
+#define TdsSensorPin A1
+GravityTDS gravityTds;
+
+float tdsValue = 0;
+//#define ONE_WIRE_BUS 10
+
+const int tempSensor1Pin = 5;
+const int tempSensor2Pin = 10;
+const int tempSensor3Pin = 3;
+//OneWire oneWire(ONE_WIRE_BUS);
+OneWire tempWire1(tempSensor1Pin);
+OneWire tempWire2(tempSensor2Pin);
+OneWire tempWire3(tempSensor3Pin);
+
+//DallasTemperature sensors(&oneWire);
+
+DallasTemperature temp1Sensor(&tempWire1);
+DallasTemperature temp2Sensor(&tempWire2);
+DallasTemperature temp3Sensor(&tempWire3);
+
+int incomingByte = 0; // for incoming serial data
+
+int numberOfDevices;
+
+void setup() {
+  temp1Sensor.begin();
+    temp2Sensor.begin();
+    temp3Sensor.begin();
+  gravityTds.setPin(TdsSensorPin);
+    gravityTds.setAref(5.0);  //reference voltage on ADC, default 5.0V on Arduino UNO
+    gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
+    gravityTds.begin(); 
+  Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
+}
+
+void loop() {
+  delay(300000);
+  temp1Sensor.requestTemperatures();
+  temp2Sensor.requestTemperatures();
+  
+  String message = "";
+  float temp1 = temp1Sensor.getTempCByIndex(0) * 9.0 / 5.0 + 32.0; //Water temp
+  float temp2 = temp2Sensor.getTempCByIndex(0) * 9.0 / 5.0 + 32.0; //Tent temp
+  float temp3 = temp3Sensor.getTempCByIndex(0) * 9.0 / 5.0 + 32.0; //Room temp
+
+  float tdsTemp = temp1Sensor.getTempCByIndex(0);
+
+  gravityTds.setTemperature(tdsTemp);
+  gravityTds.update();  //sample and calculate
+  tdsValue = gravityTds.getTdsValue();
+
+  message = message + "{\"temperature1\": ";
+  message = message + temp1;
+  message = message + " , ";
+  message = message + "\"temperature2\": ";
+  message = message + temp2;
+  message = message + " , ";
+  message = message + "\"temperature3\": ";
+  message = message + temp3;
+  message = message + " , ";
+  message = message + "\"ppm\": ";
+  message = message + tdsValue;
+  message = message + "}";
+
+  Serial.println(message);
+  
+
+}
