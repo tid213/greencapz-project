@@ -1,15 +1,11 @@
-//const { body,validationResult } = require('express-validator');
-//var crypto = require('crypto');
-//var nodemailer = require('nodemailer');
 var Users = require("../models/users");
-//var Token = require('../models/token');
 var Reading = require("../models/readings");
 var CurrentReading = require("../models/currentReading");
 const { DateTime } = require("luxon");
 const { SerialPort } = require("serialport");
 const { ReadlineParser } = require("@serialport/parser-readline");
-//var async = require('async');
 
+//Assign serial port
 const port = new SerialPort({
   path: "COM3",
   baudRate: 9600,
@@ -48,12 +44,10 @@ parser.on("data", function (data) {
   readingsList.push(newReadings);
   Users.findOne({ username: "#USERNAME" }, function (err, user) {
     if (!user)
-      return res
-        .status(400)
-        .send({
-          type: "not-verified",
-          msg: "We were unable to find a valid token. Your token my have expired.",
-        });
+      return res.status(400).send({
+        type: "not-verified",
+        msg: "We were unable to find a valid token. Your token my have expired.",
+      });
     CurrentReading.find({ _userId: user._id }, function (err, currentReading) {
       if (currentReading.length === 0) {
         var newReading1 = new CurrentReading({
@@ -116,7 +110,6 @@ parser.on("data", function (data) {
             return next(err);
           }
         });
-        //res.render('dashboard', { temperature_1: newReadings.temperature1, temperature_2: newReadings.temperature2, ppm: newReadings.ppm, status: 'live'});
       } else {
         var new_reading1 = {
           timestamp: Date.now(),
@@ -230,12 +223,10 @@ exports.user_login_get = function (req, res) {
 exports.user_dashboard = function (req, res) {
   Users.findOne({ username: "testing" }, function (err, user) {
     if (!user)
-      return res
-        .status(400)
-        .send({
-          type: "not-verified",
-          msg: "We were unable to find a valid token. Your token my have expired.",
-        });
+      return res.status(400).send({
+        type: "not-verified",
+        msg: "We were unable to find a valid token. Your token my have expired.",
+      });
     CurrentReading.find({ _userId: user._id }, function (err, currentReading) {
       var temperature1 = currentReading[0].measurements; //Water temp
       var temperature2 = currentReading[1].measurements; //Tent temp

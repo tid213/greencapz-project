@@ -88,8 +88,6 @@ exports.user_create_post = [
           if (err) {
             return next(err);
           }
-          //console.log(results.user.length)
-          //console.log(results.email.length)
           if (results.user.length != 0 || results.email.length != 0) {
             var userTaken = ["Username or Email already in use"];
             res.render("create_user", {
@@ -157,7 +155,6 @@ exports.user_create_post = [
                   });
                 });
               });
-              //res.send('Successfully Created User');
             });
           }
         }
@@ -176,7 +173,7 @@ exports.user_login = function (req, res) {
 
 //User login post
 exports.user_login_post = [
-  // Validate and sanitize the name field.
+  // Validate and sanitize
   body("username", "Username required")
     .trim()
     .isLength({ min: 1 })
@@ -240,12 +237,10 @@ exports.user_login_post = [
 exports.confirmationPost = function (req, res, next) {
   Token.findOne({ token: req.params.token }, function (err, token) {
     if (!token)
-      return res
-        .status(400)
-        .send({
-          type: "not-verified",
-          msg: "We were unable to find a valid token. Your token my have expired.",
-        });
+      return res.status(400).send({
+        type: "not-verified",
+        msg: "We were unable to find a valid token. Your token my have expired.",
+      });
 
     // If we found a token, find a matching user
     Users.findOne({ _id: token._userId }, function (err, user) {
@@ -254,12 +249,10 @@ exports.confirmationPost = function (req, res, next) {
           .status(400)
           .send({ msg: "We were unable to find a user for this token." });
       if (user.isVerified)
-        return res
-          .status(400)
-          .send({
-            type: "already-verified",
-            msg: "This user has already been verified.",
-          });
+        return res.status(400).send({
+          type: "already-verified",
+          msg: "This user has already been verified.",
+        });
 
       // Verify and save the user
       user.isVerified = true;
@@ -278,7 +271,7 @@ exports.confirmationPost = function (req, res, next) {
 //
 
 exports.resendTokenPost = [
-  // Validate and sanitize the name field.
+  // Validate and sanitize
   body("email", "email required").trim().isEmail().escape(),
 
   // Process request after validation and sanitization.
@@ -399,8 +392,6 @@ exports.user_dashboard = function (req, res) {
               var reading2 = userreading[1].measurements;
               var sensor_name = userreading[0].sensor_id;
               var sensor_name2 = userreading[1].sensor_id;
-              //console.log(sensor_name2);
-              //console.log(reading2);
               var timeStamp = [];
               var timeStamp2 = [];
               var readings = [];
@@ -408,15 +399,17 @@ exports.user_dashboard = function (req, res) {
               var readings_max = reading.length - 42;
               for (i = 0; i < 42; i++) {
                 timeStamp.push(
-                  DateTime.fromJSDate(reading[readings_max + i].timestamp).toFormat("LLL d, t")
+                  DateTime.fromJSDate(
+                    reading[readings_max + i].timestamp
+                  ).toFormat("LLL d, t")
                 );
                 readings.push(reading[readings_max + i].sensor_reading);
               }
               for (i = 0; i < 42; i++) {
                 timeStamp2.push(
-                  DateTime.fromJSDate(reading2[readings_max + i].timestamp).toFormat(
-                    "LLL d, t"
-                  )
+                  DateTime.fromJSDate(
+                    reading2[readings_max + i].timestamp
+                  ).toFormat("LLL d, t")
                 );
                 readings2.push(reading2[readings_max + i].sensor_reading);
               }
@@ -565,7 +558,7 @@ exports.password_change_get = function (req, res) {
 };
 
 exports.password_change_post = [
-  // Validate and sanitize the name field.
+  // Validate and sanitize
   body("current_password", "Password required")
     .trim()
     .isLength({ min: 1 })
@@ -641,7 +634,6 @@ exports.user_delete_get = function (req, res) {
         "WARNING!!! ONCE USER IS DELETED ALL ASSOSIATED READINGS WILL ALSO BE REMOVED.  CLICK THE BUTTON BELOW TO PROCEED.",
       user: req.session.username,
     });
-    //res.end();
   } else {
     res.redirect("/");
   }
@@ -703,12 +695,10 @@ exports.user_delete_post = function (req, res) {
 exports.user_delete_confirmation = function (req, res, next) {
   Token.findOne({ token: req.params.token }, function (err, token) {
     if (!token)
-      return res
-        .status(400)
-        .send({
-          type: "not-verified",
-          msg: "We were unable to find a valid token. Your token my have expired.",
-        });
+      return res.status(400).send({
+        type: "not-verified",
+        msg: "We were unable to find a valid token. Your token my have expired.",
+      });
 
     // If we found a token, find a matching user
     Users.findOne({ _id: token._userId }, function (err, user) {
@@ -727,7 +717,7 @@ exports.user_delete_confirmation = function (req, res, next) {
   });
 };
 
-// Update User
+// Update User info
 exports.user_update_get = function (req, res) {
   if (req.session.loggedIn) {
     Users.findOne({ username: req.session.username }).exec(function (
@@ -800,7 +790,6 @@ exports.user_update_post = [
         if (err) {
           return next(err);
         }
-        //user_name.update( {id: user_name.id}, { first_name: req.body.first_name, last_name: req.body.last_name, dob: req.body.dob, email: req.body.email});
         res.redirect("/users/dashboard");
       });
     }
@@ -815,7 +804,7 @@ exports.forgot_password_get = function (req, res) {
 };
 
 exports.forgot_password_post = [
-  // Validate and sanitize the name field.
+  // Validate and sanitize
   body("email", "email required")
     .trim()
     .isEmail()
@@ -921,7 +910,7 @@ exports.reset_password_get = function (req, res, next) {
 };
 
 exports.reset_password_post = [
-  // Validate and sanitize the name field.
+  // Validate and sanitize
   body("password", "Password required")
     .trim()
     .isLength({ min: 8 })
@@ -949,12 +938,10 @@ exports.reset_password_post = [
     } else {
       Token.findOne({ token: req.params.token }, function (err, token) {
         if (!token)
-          return res
-            .status(400)
-            .send({
-              type: "not-verified",
-              msg: "We were unable to find a valid token. Your token my have expired.",
-            });
+          return res.status(400).send({
+            type: "not-verified",
+            msg: "We were unable to find a valid token. Your token my have expired.",
+          });
 
         // If we found a token, find a matching user
         Users.findOne({ _id: token._userId }, function (err, user) {
