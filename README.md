@@ -1,6 +1,6 @@
 ## Green Capz Project
 
-The Green Capz project was created to help me monitor the environment of my indoor garden.
+The Green Capz project was created to help me monitor the environment of my indoor garden from my mobile at any time. I wrote the app to display current readings and graph the past data. I wanted to know if certain fluctuations in the environment had any effect on other variables related to the environment.  
 
 ## How it was created
 
