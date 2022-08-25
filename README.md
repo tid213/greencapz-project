@@ -1,20 +1,19 @@
 ## Green Capz Project
 
-The Green Capz project was created to help me monitor my indoor garden.
+The Green Capz project was created to help me monitor the environment of my indoor garden.
 
 ## How it was created
 
-I created the greencapz-client app to run on RaspberryPi OS, that is
+I created the greencapz-client app to run on RaspberryPi OS that is
 running on a RaspberryPi 3b.  The RaspberryPi takes serial readings 
-from an Arduino board that is connected to 4 different sensors (I Will
-eventually add a pH sensor).  The app then sends the current data to
-a Mongo DB that is displayed on an LED screen.  The app also sends
-data every four hours to provide graph data to the greencapz-app
-online access.  
+from an Arduino board that is connected to 4 different sensors.  The app then sends the current data to
+a MongoDB database. 
 
-The greencapz-app is the web app that, upon logging in, allows me access
-to the current and past readings. Greencapz allows users to create an
-account and view all readings associated with the account. It provides
+The box housing the Raspberry Pi and Arduino board contains a small LED monitor to display the current readings.   
+
+The greencapz-app is the web app that allows access
+to the current and past readings displayed to the user. The app allows users to create an
+account and view readings associated with the account. It provides
 the user with current readings (every 5 min.) and graphs to show past
 data up to a week. 
 
